@@ -1,0 +1,18 @@
+server:
+  port: 5050
+
+spring:
+  application:
+    name: hystrix-dashboard
+
+# allow from cloud api side and entering address
+hystrix:
+  dashboard:
+    proxy-stream-allow-list:
+      - '192.168.40.62'
+
+# Eureka server address
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.40.62:8761/eureka

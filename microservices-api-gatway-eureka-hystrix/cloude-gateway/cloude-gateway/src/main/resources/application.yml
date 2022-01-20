@@ -1,0 +1,49 @@
+server:
+  port: 8080
+  address: 192.168.40.62 # cloude gateway address
+
+#  eureka.client.serviceUrl.defaultZone=http://192.168.40.62:8761/eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.40.62:8761/eureka # Eureka server address which can register by this address
+spring:
+  application:
+    name: api-gateway # gateway application name
+  cloud:
+    gateway:
+      routes:
+        - id: employeeModule
+          uri: lb://first-service
+          predicates:
+            - Path=/first/** # when any request comes from http://192.168.40.62:8080/first/** then forword to http://first-service/first/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: shiv
+                fallbackuri: forword:/gateway/fallBackFirstService # if service server down then forword to this url
+        - id: consumerModule
+          uri: lb://second-service
+          predicates:
+            - Path=/second/**  # when any request comes from http://192.168.40.62:8080/second/** then forword to http://second-service/second/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: mohan
+                fallbackuri: forword:/gateway/fallBackSecondService # if service server down then forword to this url
+
+# wait timeout in ms
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutImMillieseconds: 5000
+
+# hystrix dashboard config
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
