@@ -1,7 +1,12 @@
 server:
   port: 8761
-  address: 192.168.40.62
-
+spring:
+  application:
+    name: Eureka-server
+  # disable the cloud config at beginning
+  cloud:
+    config:
+      enabled: false
 # eureka configuration not register microservices by default false
 eureka:
   client:
