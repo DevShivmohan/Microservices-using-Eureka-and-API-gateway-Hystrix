@@ -3,10 +3,10 @@ server:
 spring:
   application:
     name: Eureka-server
-  # disable the cloud config at beginning
-  cloud:
-    config:
-      enabled: false
+  # disable the cloud config at beginning when we use cloud-config
+#  cloud:
+#    config:
+#      enabled: false
 # eureka configuration not register microservices by default false
 eureka:
   client:
